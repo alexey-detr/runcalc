@@ -18,19 +18,20 @@ let make = () => {
       {
         ...state,
         tempoMin: min,
-        speed: 60. /. (float_of_int(min) +. float_of_int(state.tempoSec) /. 60.),
+        speed: 60. /. (float(min) +. float(state.tempoSec) /. 60.),
       }
     | ChangeTempoSec(sec) =>
       {
         ...state,
         tempoSec: sec,
-        speed: 60. /. (float_of_int(state.tempoMin) +. float_of_int(sec) /. 60.),
+        speed: 60. /. (float(state.tempoMin) +. float(sec) /. 60.),
       }
     | ChangeSpeed(speed) =>
+      let (fractional, integral) = modf(60. /. speed);
       {
         speed: speed,
-        tempoMin: 0,
-        tempoSec: 0,
+        tempoMin: truncate(integral),
+        tempoSec: truncate(fractional *. 60. +. 0.5),
       }
     },
     {

@@ -4,6 +4,7 @@
 var Block = require("bs-platform/lib/js/block.js");
 var Curry = require("bs-platform/lib/js/curry.js");
 var React = require("react");
+var Caml_float = require("bs-platform/lib/js/caml_float.js");
 var Caml_format = require("bs-platform/lib/js/caml_format.js");
 var Caml_js_exceptions = require("bs-platform/lib/js/caml_js_exceptions.js");
 var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
@@ -26,10 +27,12 @@ function App(Props) {
                         /* speed */60 / (state[/* tempoMin */0] + sec / 60)
                       ];
             case 2 : 
+                var speed = action[0];
+                var match = Caml_float.caml_modf_float(60 / speed);
                 return /* record */[
-                        /* tempoMin */0,
-                        /* tempoSec */0,
-                        /* speed */action[0]
+                        /* tempoMin */match[1] | 0,
+                        /* tempoSec */match[0] * 60 + 0.5 | 0,
+                        /* speed */speed
                       ];
             
           }
